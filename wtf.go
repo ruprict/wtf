@@ -4,35 +4,30 @@ import (
 	"time"
 )
 
-// Gauge is an aggregation of user input values
-type Gauge struct {
-	ID      string  `json:"id"`
-	OwnerID string  `json:"ownerID"`
-	Name    string  `json:"name"`
-	Value   float64 `json:"value"`
+type UserID int
+type DialID int
+
+// Dial is an aggregation of user input values
+type Dial struct {
+	ID      DialID    `json:"dialID"`
+	OwnerID UserID    `json:"userID"`
+	Name    string    `json:"name, omitempty"`
+	Level   float64   `json:"level"`
+	ModTime time.Time `json:"modTime"`
 }
 
 // User represents an authenticated user of the system
 type User struct {
-	ID   int    `json:"id"`
-	Name string `json:"name"`
+	ID   UserID `json:"id"`
+	Name string `json:"username"`
 }
 
-// DataPoint represents the level of WTF by the user for a gauge
-type DataPoint struct {
-	UserID    int       `json:"userID"`
-	GaugeID   string    `json:"gaugeID"`
-	Value     float64   `json:"value"`
-	Timestamp time.Time `json:"timestamp"`
-}
+//DialService represents a service for managing gauges
+type DialService interface {
+	Dial(id string) (*Dial, error)
+	CreateDial(dial *Dial) error
 
-//GaugeService represents a service for managing gauges
-type GaugeService interface {
-	Gauge(id string) (*Gauge, error)
-	CreateGauge(gauge *Gauge) error
-	DeleteGauge(id string) error
-
-	SaveDataPoint(p *DataPoint) error
+	SetLevel(id DialID, level float64) error
 }
 
 // UserService represents a service for managing authentication

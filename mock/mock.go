@@ -2,38 +2,40 @@ package mock
 
 import "github.com/ruprict/wtf"
 
-//GaugeService is a mock for wtf.
+//DialService is a mock for wtf.
 
-type GaugeService struct {
-	GaugeFn      func(id string) (*wtf.Gauge, error)
-	GaugeInvoked bool
+type DialService struct {
+	DialFn      func(id wtf.DialID) (*wtf.Dial, error)
+	DialInvoked bool
 
-	CreateGaugeFn      func(gauge *wtf.Gauge) error
-	CreateGaugeInvoked bool
+	CreateDialFn      func(dial *wtf.Dial) error
+	CreateDialInvoked bool
 
-	DeleteGaugeFn      func(id string) error
-	DeleteGaugeInvoked bool
-
-	SaveDataPointFn      func(input *wtf.DataPoint) error
-	SaveDataPointInvoked bool
+	SetLevelFn           func(id wtf.DialID, level float64) error
+	SetLevelPointInvoked bool
 }
 
-func (s *GaugeService) Gauge(id string) (*wtf.Gauge, error) {
-	s.GaugeInvoked = true
-	return s.GuageFn(id)
+func (s *DialService) Dial(id wtf.DialID) (*wtf.Dial, error) {
+	s.DialInvoked = true
+	return s.DialFn(id)
 }
 
-func (s *GaugeService) CraeteGauge(gauge *wtf.Gauge) error {
-	s.CreateGaugeInvoked = true
-	return s.CreateGuageFn(gauge)
+func (s *DialService) CreateDial(dial *wtf.Dial) error {
+	s.CreateDialInvoked = true
+	return s.CreateDialFn(dial)
 }
 
-func (s *GaugeService) DeleteCraeteGauge(id string) error {
-	s.DeleteGaugeInvoked = true
-	return s.DeleteGuageFn(id)
+func (s *DialService) SetLevel(id wtf.DialID, level float64) error {
+	s.SetLevelInvoked = true
+	return s.SetLevelFn(id, level)
 }
 
-func (s *GaugeService) SaveDataPoint(input *wtf.DataPoint) error {
-	s.SaveDataPointInvoked = true
-	return s.SaveDataPointFn(input)
+type UserService struct {
+	AuthenticateFn      func(token string) (*wtf.User, error)
+	AuthenticateInvoked bool
+}
+
+func (s *UserService) Authenticate(token string) (*wtf.User, error) {
+	s.AuthenticateInvoked = true
+	return s.AuthenticateFn(token)
 }
