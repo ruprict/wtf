@@ -1,0 +1,9 @@
+package internal;
+
+message Dial {
+  optional int64 ID = 1;
+  optional int64 UserID = 2;
+  optional string Name = 3;
+  optional double Level = 4;
+  optional int64 ModTime = 5;
+}
